@@ -40,7 +40,11 @@ class GdSniffer():
                 self.sam3u_port = i
             serial.close()
 
-        #self.serial = ReadSerial.ReadSerial(base_comport, self.parsePacket)
+        if self.uno_port != None:
+            self.uno_serial = ReadSerial.ReadSerial(self.uno_port, self.parseUnoPacket)
+        if self.sam3u_port != None:
+            self.sam3u_serial = ReadSerial.ReadSerial(self.sam3u_port, self.parseSam3UPacket)
+
 
     def sendChar(self, serial, a):
         txstring = a
@@ -72,15 +76,28 @@ class GdSniffer():
     def parseStatusPacket(self, packet):
         self.statusPacket = packet
 
+    def parseUnoPacket(self, packet):
+        print packet
+        pass
+
+    def parseSam3UPacket(self, packet):
+        print packet
+        pass
+
     def exit(self):
 
         time.sleep(0.1)
         # Shutdown serial module
-        #self.serial.close()
+        if self.uno_port != None:
+            self.uno_serial.close()
+        if self.sam3u_port != None:
+            self.sam3u_serial.close()
 
     def run(self):
-        #while True:
-        pass
+        while True:
+            c = raw_input()
+            if c == 't':
+                self.sendChar(self.uno_serial, 't')
 
 
 if __name__ == '__main__':
